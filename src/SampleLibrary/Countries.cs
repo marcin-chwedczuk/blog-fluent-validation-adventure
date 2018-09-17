@@ -35,7 +35,7 @@ namespace SampleLibrary {
                 name: "Poland", 
                 isoCode: "PL",
                 // not real number format
-                phoneNumberFormat: new RegexFormat("+48 \\d{3}-\\d{3}-\\d{3}")
+                phoneNumberFormat: new RegexFormat("\\+48 \\d{3}-\\d{3}-\\d{3}")
             );
         }
 
@@ -44,7 +44,7 @@ namespace SampleLibrary {
                 name: "Australia",
                 isoCode: "AU",
                 // not real number format
-                phoneNumberFormat: new RegexFormat("+61 \\d{5}-\\d{5}")
+                phoneNumberFormat: new RegexFormat("\\+61 \\d{5}-\\d{5}")
             );
         }
 

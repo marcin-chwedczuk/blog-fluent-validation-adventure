@@ -1,5 +1,6 @@
 using System;
 using FluentValidation;
+using FluentValidation.Results;
 
 namespace SampleLibrary {
     public class SampleRequestDtoValidator : AbstractValidator<SampleRequestDto> {
@@ -9,6 +10,17 @@ namespace SampleLibrary {
 
             RuleFor(x => x.ContactInfo)
                 .SetValidator(new ContactInfoDtoValidator());
+        }
+
+        protected override bool PreValidate(
+            ValidationContext<SampleRequestDto> context, ValidationResult result) 
+        {
+            var contextData = new ValidationContextData(context.RootContextData);
+
+            var countryIsoCode = context.InstanceToValidate?.Address?.CountryIsoCode;
+            contextData.CountryIsoCode = countryIsoCode;
+
+            return true;
         }
     }
 

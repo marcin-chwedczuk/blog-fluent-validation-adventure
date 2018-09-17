@@ -5,7 +5,7 @@ using FluentValidation.Validators;
 namespace SampleLibrary {
     public class PhoneNumberValidator : PropertyValidator {
         public PhoneNumberValidator() 
-            : base("'{PropertyValue}' is an invalid phone number in {Country}.") { }
+            : base("'{PropertyValue}' is not a valid phone number in {Country}.") { }
 
         protected override bool IsValid(PropertyValidatorContext context) {
             var phoneNumber = (string) context.PropertyValue;
