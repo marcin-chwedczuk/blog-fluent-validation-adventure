@@ -16,9 +16,9 @@ namespace SampleLibrary {
             ValidationContext<SampleRequestDto> context, ValidationResult result) 
         {
             var contextData = new ValidationContextData(context.RootContextData);
-
-            var countryIsoCode = context.InstanceToValidate?.Address?.CountryIsoCode;
-            contextData.CountryIsoCode = countryIsoCode;
+            
+            contextData.CountryIsoCode = 
+                context.InstanceToValidate?.Address?.CountryIsoCode;
 
             return true;
         }

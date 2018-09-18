@@ -28,26 +28,17 @@ namespace SampleLibrary {
 
             public T Value {
                 get {
-                    if (!IsSet) 
+                    if (!_context.TryGetValue(_key, out var value)) 
                         throw new InvalidOperationException(
-                            $"Property '{_key}' value was not set. " + 
-                            "Did you forget to set validation context data in PreValidate method?");
-                    return (T) _context[_key];
+                            $"Property '{_key}' was not set. " + 
+                            "Did you forget to set validation context data in PreValidate method? " +
+                            "For more details see: https://fluentvalidation.net/start#using-prevalidate");
+
+                    return (T)value;
                 }
 
                 set {
                     _context[_key] = value;
-                    IsSet = true;
-                }
-            }
-
-            private readonly string PropertySetMarker = "-PropertySetMarker";
-            private bool IsSet {
-                get { 
-                    return _context.ContainsKey(_key + PropertySetMarker);
-                }
-                set {
-                    _context[_key + PropertySetMarker] = true;
                 }
             }
         }

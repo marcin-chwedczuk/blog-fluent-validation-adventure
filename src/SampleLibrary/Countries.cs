@@ -10,7 +10,7 @@ namespace SampleLibrary {
         };
 
         public static IEnumerable<Country> All
-            => _countryByIsoCode.Values.ToArray(); // provide a copy
+            => _countryByIsoCode.Values.ToArray(); // return a copy
 
         public static bool IsKnownIsoCode(string isoCode) {
             if (isoCode == null) throw new ArgumentNullException(nameof(isoCode));
@@ -21,7 +21,7 @@ namespace SampleLibrary {
         public static Country FindCountryByIsoCode(string isoCode) {
             if (isoCode == null) throw new ArgumentNullException(nameof(isoCode));
 
-            if(_countryByIsoCode.TryGetValue(isoCode.ToUpper(), out Country country)) {
+            if(_countryByIsoCode.TryGetValue(isoCode.ToUpper(), out var country)) {
                 return country;
             }
 

@@ -12,41 +12,65 @@ namespace SampleLibrary.Test {
         }
 
         [Fact]
-        public void Should_return_no_errors_for_valid_request() {
+        public void Should_return_no_errors_when_request_is_valid() {
+            // Arrange
             var validRequest = SampleRequestDtoFixture.CreateValidRequest();
 
+            // Act
             var result = _validator.Validate(validRequest);
 
+            // Assert
             Assert.True(result.IsValid);
         }
 
         [Fact]
-        public void Should_return_error_for_invalid_country_code() {
+        public void Should_return_error_when_country_code_is_invalid() {
+            // Arrange
             var invalidRequest = SampleRequestDtoFixture.CreateValidRequest();
             invalidRequest.Address.CountryIsoCode = "XX";
 
-            _validator.ShouldHaveValidationErrorFor(x => x.Address.CountryIsoCode, invalidRequest);
+            // Assert
+            _validator
+                .ShouldHaveValidationErrorFor(x => x.Address.CountryIsoCode, invalidRequest)
+                .WithErrorMessage("'XX' is not a valid country iso code.");
         }
 
         [Fact]
-        public void Should_return_error_for_invalid_phone_number() {
+        public void Should_return_error_when_phone_number_is_invalid_and_countryIsoCode_is_set() {
+            // Arrange
             var invalidRequest = SampleRequestDtoFixture.CreateValidRequest();
+            invalidRequest.Address.CountryIsoCode = "PL";
             invalidRequest.ContactInfo.PhoneNumber = "+48 123";
 
-            _validator.ShouldHaveValidationErrorFor(x => x.ContactInfo.PhoneNumber, invalidRequest);
+            // Assert
+            _validator
+                .ShouldHaveValidationErrorFor(x => x.ContactInfo.PhoneNumber, invalidRequest)
+                .WithErrorMessage("'+48 123' is not a valid phone number in Poland.");
         }
 
         [Fact]
-        public void test_manual_check() {
+        public void Should_return_no_error_for_phoneNumber_when_countryIsoCode_is_not_set() {
+            // Arrange
             var invalidRequest = SampleRequestDtoFixture.CreateValidRequest();
-            invalidRequest.Address.CountryIsoCode = "XX";
+            invalidRequest.Address.CountryIsoCode = null;
             invalidRequest.ContactInfo.PhoneNumber = "+48 123";
 
-            var result = _validator.Validate(invalidRequest);
+            // Assert
+            _validator
+                .ShouldNotHaveValidationErrorFor(x => x.ContactInfo.PhoneNumber, invalidRequest);
+        }
 
-            result.Errors.ToList().ForEach(err => {
-                Console.WriteLine(err.ErrorMessage);
-            });
+        
+        [Fact]
+        public void Should_return_no_error_when_phoneNumber_is_valid() {
+            // Arrange
+            var invalidRequest = SampleRequestDtoFixture.CreateValidRequest();
+            invalidRequest.Address.CountryIsoCode = "PL";
+            invalidRequest.ContactInfo.PhoneNumber = "+48 111-222-333";
+
+            // Assert
+            _validator
+                .ShouldNotHaveValidationErrorFor(x => x.ContactInfo.PhoneNumber, invalidRequest);
         }
     }
 }
