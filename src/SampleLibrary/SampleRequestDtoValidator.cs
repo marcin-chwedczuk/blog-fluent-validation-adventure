@@ -16,7 +16,7 @@ namespace SampleLibrary {
             ValidationContext<SampleRequestDto> context, ValidationResult result) 
         {
             var contextData = new ValidationContextData(context.RootContextData);
-            
+
             contextData.CountryIsoCode = 
                 context.InstanceToValidate?.Address?.CountryIsoCode;
 
@@ -28,6 +28,9 @@ namespace SampleLibrary {
         public AddressDtoValidator() {
             RuleFor(x => x.AddressLine1)
                 .NotEmpty()
+                .MaximumLength(100);
+
+            RuleFor(x => x.AddressLine2)
                 .MaximumLength(100);
 
             RuleFor(x => x.City)
